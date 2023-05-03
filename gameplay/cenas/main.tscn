@@ -1,0 +1,105 @@
+[gd_scene load_steps=14 format=3 uid="uid://bnf72gff18p7h"]
+
+[ext_resource type="Script" path="res://gameplay/cenas/scripts/main.gd" id="1_4ej5s"]
+[ext_resource type="Texture2D" uid="uid://bm3fi5ujcqfmq" path="res://gameplay/recursos/BGfruitsamurai.jpg" id="2_0asc2"]
+[ext_resource type="Texture2D" uid="uid://61o1hdwq00c1" path="res://gameplay/recursos/AnmCortef1.png" id="3_wocu7"]
+[ext_resource type="Texture2D" uid="uid://b4o0jpn4k3mqd" path="res://gameplay/recursos/AnmCortef2.png" id="4_ruadu"]
+[ext_resource type="Texture2D" uid="uid://cikd4ihmd0q5u" path="res://gameplay/recursos/AnmCortef3.png" id="5_cw6yb"]
+[ext_resource type="Texture2D" uid="uid://darcr7urc5q2b" path="res://gameplay/recursos/AnmCortef4.png" id="6_mnt1n"]
+[ext_resource type="Script" path="res://gameplay/cenas/scripts/slice.gd" id="7_j0s6u"]
+[ext_resource type="AudioStream" uid="uid://dpjplllmxtyu5" path="res://gameplay/recursos/error.ogg" id="8_lwpce"]
+[ext_resource type="AudioStream" uid="uid://c4asa71v7tt1t" path="res://gameplay/recursos/swosh-01.mp3" id="9_as5oc"]
+[ext_resource type="AudioStream" uid="uid://hbdcwtkm58qk" path="res://gameplay/recursos/slice.wav" id="10_wa12l"]
+[ext_resource type="AudioStream" uid="uid://baoe3evj8qynm" path="res://gameplay/recursos/Samurai.mp3" id="11_c0g2u"]
+
+[sub_resource type="Curve2D" id="Curve2D_ngptm"]
+_data = {
+"points": PackedVector2Array(0, 0, 0, 0, 476.445, 2432, 0, 0, 0, 0, 1111.7, 2432)
+}
+point_count = 2
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_p0m2f"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("3_wocu7")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_ruadu")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_cw6yb")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_cw6yb")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_mnt1n")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_mnt1n")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[node name="Main" type="Node2D"]
+script = ExtResource("1_4ej5s")
+
+[node name="bg" type="Sprite2D" parent="."]
+position = Vector2(978.781, 550.234)
+scale = Vector2(0.772046, 0.698457)
+texture = ExtResource("2_0asc2")
+
+[node name="Timer" type="Timer" parent="."]
+wait_time = 1.2
+autostart = true
+
+[node name="Path2D" type="Path2D" parent="."]
+scale = Vector2(1.20896, 0.5)
+curve = SubResource("Curve2D_ngptm")
+
+[node name="PathFollow2D" type="PathFollow2D" parent="Path2D"]
+position = Vector2(1111.7, 2432)
+progress = 668.537
+rotates = false
+
+[node name="slice" type="AnimatedSprite2D" parent="."]
+visible = false
+z_index = 1
+scale = Vector2(2, 2)
+sprite_frames = SubResource("SpriteFrames_p0m2f")
+speed_scale = 1.2
+script = ExtResource("7_j0s6u")
+
+[node name="audio_lose" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("8_lwpce")
+volume_db = 10.032
+
+[node name="audio_throw" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("9_as5oc")
+volume_db = -3.748
+
+[node name="audio_slice" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("10_wa12l")
+
+[node name="score_count" type="RichTextLabel" parent="."]
+offset_left = 24.0
+offset_right = 448.0
+offset_bottom = 152.0
+theme_override_font_sizes/normal_font_size = 50
+text = "0"
+
+[node name="bg_music" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("11_c0g2u")
+volume_db = -10.306
+autoplay = true
+
+[node name="Camera2D" type="Camera2D" parent="."]
+anchor_mode = 0
+zoom = Vector2(0.591, 0.591)
+
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
+[connection signal="animation_finished" from="slice" to="slice" method="_on_animation_finished"]
+[connection signal="animation_looped" from="slice" to="slice" method="_on_animation_looped"]

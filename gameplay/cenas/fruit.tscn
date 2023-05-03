@@ -1,0 +1,89 @@
+[gd_scene load_steps=14 format=3 uid="uid://c8nyydvpcpkff"]
+
+[ext_resource type="Script" path="res://gameplay/cenas/scripts/fruit.gd" id="1_njx44"]
+[ext_resource type="Texture2D" uid="uid://cja32amqn37t" path="res://gameplay/recursos/maca0.png" id="2_8o4s7"]
+[ext_resource type="Texture2D" uid="uid://eq8ky7x8247f" path="res://gameplay/recursos/maca1.png" id="3_ebq0a"]
+[ext_resource type="Texture2D" uid="uid://oapboc0y232f" path="res://gameplay/recursos/banana0.png" id="4_jd0fg"]
+[ext_resource type="Texture2D" uid="uid://di8xo6r0fohc8" path="res://gameplay/recursos/banana1.png" id="5_0hnxe"]
+[ext_resource type="Texture2D" uid="uid://cum8f3xmwp1yn" path="res://gameplay/recursos/abacaxi0.png" id="6_ot2b8"]
+[ext_resource type="Texture2D" uid="uid://qpdgh5rnvr1w" path="res://gameplay/recursos/kb-arrow.png" id="7_d1g54"]
+[ext_resource type="Texture2D" uid="uid://chdklxlxgvkm8" path="res://gameplay/recursos/abacaxi1.png" id="7_lex6n"]
+[ext_resource type="Texture2D" uid="uid://c2yhrehyc3iry" path="res://gameplay/recursos/melancia0.png" id="8_tffu1"]
+[ext_resource type="Texture2D" uid="uid://cd2l42mnsi2wa" path="res://gameplay/recursos/melancia1.png" id="9_bfgrg"]
+[ext_resource type="Script" path="res://gameplay/cenas/scripts/arrow.gd" id="11_ulgig"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_0ensf"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_4jsog"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_8o4s7")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_ebq0a")
+}],
+"loop": true,
+"name": &"apple",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("4_jd0fg")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_0hnxe")
+}],
+"loop": true,
+"name": &"banana",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("6_ot2b8")
+}, {
+"duration": 1.0,
+"texture": ExtResource("7_lex6n")
+}],
+"loop": true,
+"name": &"pineapple",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("8_tffu1")
+}, {
+"duration": 1.0,
+"texture": ExtResource("9_bfgrg")
+}],
+"loop": true,
+"name": &"watermelon",
+"speed": 5.0
+}]
+
+[node name="fruit" type="RigidBody2D"]
+gravity_scale = 2.0
+script = ExtResource("1_njx44")
+
+[node name="collision_shape" type="CollisionShape2D" parent="."]
+scale = Vector2(5, 5)
+shape = SubResource("CircleShape2D_0ensf")
+
+[node name="whole_sprite" type="AnimatedSprite2D" parent="."]
+position = Vector2(-2, -16)
+scale = Vector2(0.321888, 0.321888)
+sprite_frames = SubResource("SpriteFrames_4jsog")
+animation = &"pineapple"
+
+[node name="VisibleOnScreenNotifier2D" type="VisibleOnScreenNotifier2D" parent="."]
+position = Vector2(-4, -4)
+scale = Vector2(6.8, 6.8)
+
+[node name="arrow" type="Sprite2D" parent="."]
+z_index = 1
+position = Vector2(200, 0)
+scale = Vector2(1.70312, 1.70312)
+texture = ExtResource("7_d1g54")
+script = ExtResource("11_ulgig")
+
+[connection signal="screen_exited" from="VisibleOnScreenNotifier2D" to="." method="_on_visible_on_screen_notifier_2d_screen_exited"]
